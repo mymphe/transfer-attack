@@ -3,7 +3,7 @@ pragma solidity ^0.8.4;
 
 import "./KingOfEther.sol";
 
-contract Attack {
+contract TransferAttack {
     KingOfEther public kingOfEther;
 
     constructor(address _kingOfEther) {

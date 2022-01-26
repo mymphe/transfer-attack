@@ -7,7 +7,7 @@ import {
   BytesLike,
   CallOverrides,
   ContractTransaction,
-  Overrides,
+  PayableOverrides,
   PopulatedTransaction,
   Signer,
   utils,
@@ -16,32 +16,35 @@ import { FunctionFragment, Result } from "@ethersproject/abi";
 import { Listener, Provider } from "@ethersproject/providers";
 import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
-export interface GreeterInterface extends utils.Interface {
-  contractName: "Greeter";
+export interface TransferAttackInterface extends utils.Interface {
+  contractName: "TransferAttack";
   functions: {
-    "greet()": FunctionFragment;
-    "setGreeting(string)": FunctionFragment;
+    "attack()": FunctionFragment;
+    "kingOfEther()": FunctionFragment;
   };
 
-  encodeFunctionData(functionFragment: "greet", values?: undefined): string;
-  encodeFunctionData(functionFragment: "setGreeting", values: [string]): string;
+  encodeFunctionData(functionFragment: "attack", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "kingOfEther",
+    values?: undefined
+  ): string;
 
-  decodeFunctionResult(functionFragment: "greet", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "attack", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "setGreeting",
+    functionFragment: "kingOfEther",
     data: BytesLike
   ): Result;
 
   events: {};
 }
 
-export interface Greeter extends BaseContract {
-  contractName: "Greeter";
+export interface TransferAttack extends BaseContract {
+  contractName: "TransferAttack";
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: GreeterInterface;
+  interface: TransferAttackInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -63,44 +66,40 @@ export interface Greeter extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    greet(overrides?: CallOverrides): Promise<[string]>;
-
-    setGreeting(
-      _greeting: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+    attack(
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    kingOfEther(overrides?: CallOverrides): Promise<[string]>;
   };
 
-  greet(overrides?: CallOverrides): Promise<string>;
-
-  setGreeting(
-    _greeting: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+  attack(
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  callStatic: {
-    greet(overrides?: CallOverrides): Promise<string>;
+  kingOfEther(overrides?: CallOverrides): Promise<string>;
 
-    setGreeting(_greeting: string, overrides?: CallOverrides): Promise<void>;
+  callStatic: {
+    attack(overrides?: CallOverrides): Promise<void>;
+
+    kingOfEther(overrides?: CallOverrides): Promise<string>;
   };
 
   filters: {};
 
   estimateGas: {
-    greet(overrides?: CallOverrides): Promise<BigNumber>;
-
-    setGreeting(
-      _greeting: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+    attack(
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    kingOfEther(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    greet(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    setGreeting(
-      _greeting: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+    attack(
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
+
+    kingOfEther(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }
