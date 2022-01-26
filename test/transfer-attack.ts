@@ -10,7 +10,7 @@ import { TransferAttack } from "../types/TransferAttack";
 const { deployContract } = waffle;
 const { expect } = chai;
 
-xdescribe("TransferAttack", async () => {
+describe("TransferAttack", async () => {
   let kingOfEther: KingOfEther;
   let transferAttack: TransferAttack;
 
