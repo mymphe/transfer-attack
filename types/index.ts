@@ -2,7 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { KingOfEther } from "./KingOfEther";
+export type { KingOfEtherFix } from "./KingOfEtherFix";
 export type { TransferAttack } from "./TransferAttack";
 
 export { KingOfEther__factory } from "./factories/KingOfEther__factory";
+export { KingOfEtherFix__factory } from "./factories/KingOfEtherFix__factory";
 export { TransferAttack__factory } from "./factories/TransferAttack__factory";

@@ -17,6 +17,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.KingOfEther__factory>;
     getContractFactory(
+      name: "KingOfEtherFix",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.KingOfEtherFix__factory>;
+    getContractFactory(
       name: "TransferAttack",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.TransferAttack__factory>;
@@ -26,6 +30,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.KingOfEther>;
+    getContractAt(
+      name: "KingOfEtherFix",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.KingOfEtherFix>;
     getContractAt(
       name: "TransferAttack",
       address: string,
