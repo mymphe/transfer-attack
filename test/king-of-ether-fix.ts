@@ -8,7 +8,7 @@ import { KingOfEtherFix } from "../types/KingOfEtherFix";
 const { deployContract } = waffle;
 const { expect } = chai;
 
-describe("KingOfEtherFix", async () => {
+xdescribe("KingOfEtherFix", async () => {
   let kingOfEtherFix: KingOfEtherFix;
 
   it("should initially set the deployer as the `richest`", async () => {

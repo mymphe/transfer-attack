@@ -2,54 +2,54 @@ import chai from "chai";
 import { constants } from "ethers";
 import { parseEther } from "ethers/lib/utils";
 import { ethers, waffle } from "hardhat";
-import KingOfEtherArtifact from "../artifacts/contracts/KingOfEther.sol/KingOfEther.json";
+import KingOfEtherFixArtifact from "../artifacts/contracts/KingOfEtherFix.sol/KingOfEtherFix.json";
 import TransferAttackArtifact from "../artifacts/contracts/TransferAttack.sol/TransferAttack.json";
-import { KingOfEther } from "../types/KingOfEther";
+import { KingOfEtherFix } from "../types/KingOfEtherFix";
 import { TransferAttack } from "../types/TransferAttack";
 
 const { deployContract } = waffle;
 const { expect } = chai;
 
-xdescribe("TransferAttack", async () => {
-  let kingOfEther: KingOfEther;
+describe("TransferAttack", async () => {
+  let kingOfEtherFix: KingOfEtherFix;
   let transferAttack: TransferAttack;
 
   beforeEach(async () => {
     const [signer] = await ethers.getSigners();
-    kingOfEther = (await deployContract(
+    kingOfEtherFix = (await deployContract(
       signer,
-      KingOfEtherArtifact,
+      KingOfEtherFixArtifact,
       undefined,
       {
         value: parseEther("1"),
       }
-    )) as KingOfEther;
+    )) as KingOfEtherFix;
 
     transferAttack = (await deployContract(signer, TransferAttackArtifact, [
-      kingOfEther.address,
+      kingOfEtherFix.address,
     ])) as TransferAttack;
   });
 
-  it("should set `kingOfEther` the address of KingOfEther contract", async () => {
+  it("should set `kingOfEther` the address of KingOfEtherFix contract", async () => {
     const kingOfEtherAddress = await transferAttack.kingOfEther();
 
-    expect(kingOfEtherAddress).to.equal(kingOfEther.address);
+    expect(kingOfEtherAddress).to.equal(kingOfEtherFix.address);
   });
 
   it("should be able to become `richest` in `KingOfEther`", async () => {
-    const mostSent = await kingOfEther.mostSent();
+    const mostSent = await kingOfEtherFix.mostSent();
     const sendValue = mostSent.add(constants.One);
 
     await transferAttack.attack({
       value: sendValue,
     });
 
-    const richest = await kingOfEther.richest();
+    const richest = await kingOfEtherFix.richest();
     expect(richest).to.equal(transferAttack.address);
   });
 
-  it("should render `KingOfEther` unplayable", async () => {
-    const mostSent = await kingOfEther.mostSent();
+  it("should not be able to render `KingOfEtherFix` unplayable", async () => {
+    const mostSent = await kingOfEtherFix.mostSent();
     const sendValue = mostSent.add(constants.One);
 
     await transferAttack.attack({
@@ -58,11 +58,12 @@ xdescribe("TransferAttack", async () => {
 
     const [, anotherPlayer] = await ethers.getSigners();
     await expect(
-      kingOfEther.connect(anotherPlayer).becomeRichest({
+      kingOfEtherFix.connect(anotherPlayer).becomeRichest({
         value: sendValue.add(constants.One),
       })
-    ).to.be.revertedWith(
-      "there's no receive function, fallback function is not payable and was called with value 1000000000000000002"
-    );
+    ).to.not.be.reverted;
+
+    const newRichest = await kingOfEtherFix.richest();
+    expect(newRichest).to.equal(anotherPlayer.address);
   });
 });
